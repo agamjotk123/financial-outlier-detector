@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import io
 
 # 1. Page & App Branding Configuration
 st.set_page_config(
@@ -169,15 +168,14 @@ if df is not None:
                 outlier_df = pd.DataFrame(all_outliers)
                 st.dataframe(outlier_df, use_container_width=True)
                 
-                buffer = io.BytesIO()
-                with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
-                    outlier_df.to_excel(writer, index=False, sheet_name='Audit_Summary')
+                # Native CSV Export
+                csv_data = outlier_df.to_csv(index=False).encode('utf-8')
                 
                 st.download_button(
-                    label="📥 Download Audit Report (.xlsx)",
-                    data=buffer.getvalue(),
-                    file_name="FinPulse_Anomaly_Report.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    label="📥 Download Audit Report (.csv)",
+                    data=csv_data,
+                    file_name="FinPulse_Anomaly_Report.csv",
+                    mime="text/csv"
                 )
             else:
                 st.success("No anomalies detected based on the configured sensitivity.")
