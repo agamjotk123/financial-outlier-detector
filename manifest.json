@@ -1,4 +1,5 @@
 {
+  "id": "/?standalone=true",
   "short_name": "FinPulse",
   "name": "FinPulse Analytics",
   "icons": [
@@ -15,7 +16,8 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/",
+  "start_url": "/?standalone=true",
+  "scope": "/",
   "background_color": "#0B0F19",
   "theme_color": "#0B0F19",
   "display": "standalone",

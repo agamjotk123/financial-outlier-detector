@@ -13,7 +13,7 @@ st.set_page_config(
 # Custom Hosted Logo URL
 LOGO_URL = "https://raw.githubusercontent.com/agamjotk123/financial-outlier-detector/main/logo.png"
 
-# 2. PWA Meta Tags & Custom Icon Links
+# 2. PWA Meta Tags, Custom Icons & Parent Frame Override Script
 st.markdown(f"""
     <head>
         <link rel="manifest" href="manifest.json">
@@ -24,6 +24,29 @@ st.markdown(f"""
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="FinPulse">
         <script>
+            // Override parent frame manifest & icons on Streamlit Cloud
+            try {{
+                let parentDoc = window.parent.document;
+                
+                // Set custom title
+                parentDoc.title = "FinPulse Analytics";
+                
+                // Override parent favicon
+                let iconLink = parentDoc.querySelector("link[rel*='icon']") || parentDoc.createElement('link');
+                iconLink.type = 'image/png';
+                iconLink.rel = 'shortcut icon';
+                iconLink.href = '{LOGO_URL}';
+                parentDoc.getElementsByTagName('head')[0].appendChild(iconLink);
+                
+                // Override parent manifest
+                let manifestLink = parentDoc.querySelector("link[rel='manifest']") || parentDoc.createElement('link');
+                manifestLink.rel = 'manifest';
+                manifestLink.href = 'manifest.json';
+                parentDoc.getElementsByTagName('head')[0].appendChild(manifestLink);
+            }} catch (e) {{
+                console.log("PWA header injection active");
+            }}
+
             if ('serviceWorker' in navigator) {{
                 window.addEventListener('load', () => {{
                     navigator.serviceWorker.register('/sw.js');
