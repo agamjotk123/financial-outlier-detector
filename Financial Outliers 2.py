@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# 1. Page & App Branding Configuration
+# 1. Page Configuration
 st.set_page_config(
     page_title="FinPulse | AI Outlier Detector",
     page_icon="⚡",
@@ -10,65 +10,68 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. PWA Meta Tags, Service Worker Registration & High-End Light Blue / Black Custom CSS
-st.markdown("""
+# Custom Hosted Logo URL
+LOGO_URL = "https://raw.githubusercontent.com/agamjotk123/financial-outlier-detector/main/logo.png"
+
+# 2. PWA Meta Tags & Custom Icon Links
+st.markdown(f"""
     <head>
         <link rel="manifest" href="manifest.json">
+        <link rel="apple-touch-icon" href="{LOGO_URL}">
+        <link rel="icon" type="image/png" href="{LOGO_URL}">
         <meta name="theme-color" content="#0B0F19">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="FinPulse">
         <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(reg => console.log('Service Worker registered!', reg))
-                        .catch(err => console.error('Service Worker registration failed:', err));
-                });
-            }
+            if ('serviceWorker' in navigator) {{
+                window.addEventListener('load', () => {{
+                    navigator.serviceWorker.register('/sw.js');
+                }});
+            }}
         </script>
     </head>
     
     <style>
     /* Dark Electric Blue Gradient Background */
-    .stApp {
+    .stApp {{
         background: linear-gradient(135deg, #060911 0%, #0B132B 50%, #1C2541 100%);
         color: #F0F4F8;
-    }
+    }}
     
     /* Header Styling */
-    .brand-title {
+    .brand-title {{
         font-size: 2.6rem;
         font-weight: 800;
         background: linear-gradient(90deg, #38BDF8 0%, #818CF8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0px;
-    }
+    }}
     
-    .brand-sub {
+    .brand-sub {{
         color: #94A3B8;
         font-size: 1.05rem;
         margin-bottom: 20px;
-    }
+    }}
     
     /* Custom Blue Glassmorphism Container Cards */
-    div[data-testid="stMetric"], div.stDataFrame, .css-1r6slb0 {
+    div[data-testid="stMetric"], div.stDataFrame, .css-1r6slb0 {{
         background: rgba(15, 23, 42, 0.75) !important;
         border: 1px solid rgba(56, 189, 248, 0.25) !important;
         border-radius: 12px !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         padding: 15px !important;
-    }
+    }}
     
     /* Metric Value Styling */
-    div[data-testid="stMetricValue"] {
+    div[data-testid="stMetricValue"] {{
         color: #38BDF8 !important;
         font-weight: 700 !important;
-    }
+    }}
 
     /* Primary Electric Blue Button */
-    .stButton > button[kind="primary"] {
+    .stButton > button[kind="primary"] {{
         background: linear-gradient(90deg, #0284C7 0%, #2563EB 100%) !important;
         color: #FFFFFF !important;
         border: none !important;
@@ -76,13 +79,13 @@ st.markdown("""
         font-weight: 600 !important;
         padding: 0.6rem 1.2rem !important;
         box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39) !important;
-    }
+    }}
 
     /* Sidebar Styling */
-    section[data-testid="stSidebar"] {
+    section[data-testid="stSidebar"] {{
         background-color: #0B0F19 !important;
         border-right: 1px solid rgba(56, 189, 248, 0.15) !important;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -188,4 +191,3 @@ if df is not None:
                 )
             else:
                 st.success("No anomalies detected based on the configured sensitivity.")
-                
