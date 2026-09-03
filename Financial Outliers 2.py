@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. PWA Meta Tags & High-End Light Blue / Black Custom CSS
+# 2. PWA Meta Tags, Service Worker Registration & High-End Light Blue / Black Custom CSS
 st.markdown("""
     <head>
         <link rel="manifest" href="manifest.json">
@@ -18,6 +18,15 @@ st.markdown("""
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="FinPulse">
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(reg => console.log('Service Worker registered!', reg))
+                        .catch(err => console.error('Service Worker registration failed:', err));
+                });
+            }
+        </script>
     </head>
     
     <style>
@@ -90,7 +99,7 @@ with st.sidebar:
         st.session_state["use_sample"] = True
 
     st.divider()
-    st.markdown("<p style='color: #64748B; font-size: 0.85rem;'>Version 2.0 • Light-Blue Theme</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #64748B; font-size: 0.85rem;'>Version 2.0 • PWA Enabled</p>", unsafe_allow_html=True)
 
 # 5. Data Handler
 uploaded_file = st.file_uploader("Upload Excel File (.xlsx or .xlsb)", type=["xlsx", "xlsb"])
@@ -179,3 +188,4 @@ if df is not None:
                 )
             else:
                 st.success("No anomalies detected based on the configured sensitivity.")
+                
